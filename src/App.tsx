@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import DetailsPage from './pages/DetailsPage';
 import ListPage from './pages/ListPage';
 
-const App = () => (
+const App: React.FC = () => (
   <div className="App">
     <BrowserRouter>
       <Routes>
