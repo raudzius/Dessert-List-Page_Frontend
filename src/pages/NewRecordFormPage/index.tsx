@@ -16,24 +16,25 @@ const NewRecordForm = () => {
   const detailsRef = React.useRef<null | HTMLInputElement>(null);
   const nav = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    await fetch('http://localhost:4000/list', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: dessertRef.current?.value,
-        calories: caloriesRef.current?.value,
-        fat: fatRef.current?.value,
-        carbs: carbsRef.current?.value,
-        protein: proteinRef.current?.value,
-        image: imageRef.current?.value,
-        details: detailsRef.current?.value,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    (async () => {
+      await fetch('http://localhost:4000/list', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: dessertRef.current?.value,
+          calories: caloriesRef.current?.value,
+          fat: fatRef.current?.value,
+          carbs: carbsRef.current?.value,
+          protein: proteinRef.current?.value,
+          image: imageRef.current?.value,
+          details: detailsRef.current?.value,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    })();
     nav('/');
   };
 
@@ -52,8 +53,8 @@ const NewRecordForm = () => {
         </Typography>
         <Box
           component="form"
-          action="/newRecord"
-          method="post"
+          method="POST"
+          action="/list"
           onSubmit={handleSubmit}
           noValidate
           sx={{ mt: 1 }}
