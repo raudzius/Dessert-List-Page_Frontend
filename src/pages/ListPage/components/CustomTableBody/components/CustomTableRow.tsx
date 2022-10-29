@@ -11,7 +11,7 @@ const CustomTableRow: React.FC<CustomTableRowProps> = ({ row }) => {
   const nav = useNavigate();
 
   const tableRowClickHandler = () => {
-    nav(`/details/${row.id}`);
+    nav(`/details/${row._id}`);
   };
 
   return (
