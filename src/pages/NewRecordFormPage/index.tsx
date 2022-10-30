@@ -14,28 +14,35 @@ const NewRecordForm = () => {
   const proteinRef = React.useRef<null | HTMLInputElement>(null);
   const imageRef = React.useRef<null | HTMLInputElement>(null);
   const detailsRef = React.useRef<null | HTMLInputElement>(null);
+  const [invalid, setInvalid] = React.useState(false);
   const nav = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    (async () => {
-      await fetch('http://localhost:4000/list', {
-        method: 'POST',
-        body: JSON.stringify({
-          name: dessertRef.current?.value,
-          calories: caloriesRef.current?.value,
-          fat: fatRef.current?.value,
-          carbs: carbsRef.current?.value,
-          protein: proteinRef.current?.value,
-          image: imageRef.current?.value,
-          details: detailsRef.current?.value,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    })();
-    nav('/');
+    const formInputValues = {
+      name: dessertRef.current?.value,
+      calories: caloriesRef.current?.value,
+      fat: fatRef.current?.value,
+      carbs: carbsRef.current?.value,
+      protein: proteinRef.current?.value,
+      image: imageRef.current?.value,
+      details: detailsRef.current?.value,
+    };
+
+    if (!Object.values(formInputValues).includes('')) {
+      (async () => {
+        await fetch('http://localhost:4000/list', {
+          method: 'POST',
+          body: JSON.stringify(formInputValues),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      })();
+      nav('/');
+    } else {
+      setInvalid(true);
+    }
   };
 
   return (
@@ -59,6 +66,11 @@ const NewRecordForm = () => {
           noValidate
           sx={{ mt: 1 }}
         >
+          {invalid && (
+            <Typography color="error" variant="h4" component="p" sx={{ textAlign: 'center' }}>
+              All fields are required!
+            </Typography>
+          )}
           <TextField
             inputRef={dessertRef}
             margin="normal"
